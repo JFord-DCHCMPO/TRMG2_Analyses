@@ -8,7 +8,8 @@ SQ_MI_PER_SQ_M = 3.86 * 10**-7
 
 def aggregate_by_geography(df, group_cols, 
                        sum_cols = [], mean_cols = [], 
-                       count_cols = [], nunique_cols = []):
+                       count_cols = [], nunique_cols = [],
+                        max_cols = [], min_cols = []):
 
     final_df = df[group_cols].drop_duplicates().reset_index()
     
@@ -19,8 +20,10 @@ def aggregate_by_geography(df, group_cols,
                        values=agg_cols,
                        aggfunc=AGGREGATE_FUNCTION).reset_index()
         
-        final_df = pd.merge(final_df, agg_df, 
-                           on=group_cols, how="left", validate="1:1")
+        final_df = pd.merge(final_df, agg_df, #on=group_cols, how="left", validate="1:1",suffixes=('', '_drop'))
+                                left_on=group_cols, how="inner", validate="1:1",suffixes=('', '_drop'))
+        
+
         return final_df
 
     
@@ -35,7 +38,13 @@ def aggregate_by_geography(df, group_cols,
  
     if len(nunique_cols) > 0:
         final_df = aggregate_and_merge(df, final_df, group_cols, nunique_cols, "nunique")
-     
+
+    if len(max_cols) > 0:
+        final_df = aggregate_and_merge(df, final_df, group_cols, max_cols, "max")
+ 
+    if len(min_cols) > 0:
+        final_df = aggregate_and_merge(df, final_df, group_cols, nunique_cols, "min")
+
     return final_df.drop(columns = "index")
 
 
@@ -50,3 +59,5 @@ def attach_geometry(df, geometry_df,
     )
     
     return gdf
+
+
