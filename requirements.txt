@@ -1,0 +1,10 @@
+jupyterlab
+caliperpy
+numpy
+siuba
+plotnine
+requests
+pandas
+textblob
+plotly-express
+voila
