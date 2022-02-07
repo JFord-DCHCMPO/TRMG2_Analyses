@@ -6,5 +6,6 @@ plotnine
 requests
 pandas
 textblob
+plotly
 plotly-express
 voila
