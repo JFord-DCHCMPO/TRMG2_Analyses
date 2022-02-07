@@ -7,31 +7,7 @@ from siuba import *
 from plotnine import ggplot, aes, geom_line
 
 
-##TRMG2
 
-path = "c:/Users/JacobFo/TRMG2_v0.2/scenarios/base_2016/output/networks/scenario_links.bin"
-hwy_2016_g2 = dk.GetDataFrameFromBin(path)
-
-hwy_2016_g2['Total_Transit_Flow'] = hwy_2016_g2['AB_Total_TransitFlow'] + hwy_2016_g2['BA_Total_TransitFlow']
-
-##Load TRMv6.2
-
-path = "c:/Users/JacobFo/OneDrive - City of Durham/Full Model Runs/Original TRMv6.2_2016 - Copy/"
-inpFname =  os.path.join(path, "Input/Highway/Highway_Line.bin")
-hwy_2016_v6 = dk.GetDataFrameFromBin(inpFname)
-
-replace_nas = hwy_2016_v6
-
-replace_nas.fillna(value = 0,inplace = True)
-
-replace_nas['TotVMT'] = replace_nas['ABAMVMT']+replace_nas['ABMDVMT']+replace_nas['ABNTVMT']+replace_nas['ABPMVMT']+replace_nas['BAAMVMT']+replace_nas['BAMDVMT']+replace_nas['BANTVMT']+replace_nas['BAPMVMT']
-
-replace_nas['TotVHT'] = replace_nas['ABAMVHT']+replace_nas['ABMDVHT']+replace_nas['ABNTVHT']+replace_nas['ABPMVHT']+replace_nas['BAAMVHT']+replace_nas['BAMDVHT']+replace_nas['BANTVHT']+replace_nas['BAPMVHT']
-
-
-
-
-pd.set_option('display.float_format', lambda x: '%.3f' % x)
 
 WGS84 = "EPSG:4326"
 CA_StatePlane = "EPSG:2229" # units are in feet
