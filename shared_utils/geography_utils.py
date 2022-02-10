@@ -7,8 +7,6 @@ from siuba import *
 from plotnine import ggplot, aes, geom_line
 
 
-
-
 WGS84 = "EPSG:4326"
 CA_StatePlane = "EPSG:2229" # units are in feet
 CA_NAD83Albers = "EPSG:3310" # units are in meters
