@@ -1,5 +1,4 @@
 jupyterlab
-caliperpy
 numpy
 siuba
 plotnine
