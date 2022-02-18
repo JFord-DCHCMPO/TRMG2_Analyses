@@ -1,0 +1,2836 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Jacob Ford DCHC MPO" />
+
+
+<title>TRMG2 Base Year Evaluation</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.5.1/jquery-3.5.1.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.9.3/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-1.57.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-1.57.1/plotly-latest.min.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">TRMG2 Baseyear Evaluation</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">TRMG2 Baseyear Evaluation</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">TRMG2 Base Year Evaluation</h1>
+<h4 class="author">Jacob Ford DCHC MPO</h4>
+<h4 class="date">2/14/2022</h4>
+
+</div>
+
+
+<p>This document analyzes the initial base year (2016) model output for the TRMG2 against the TRMv6.2. Note: The TRMG2 2016 base year will be updated to the 2020 upon delivery. Additionally, the TRMG2 model includes the expansion into Alamance and Johnston Counties, hence county level totals may deviate from totals in TRMv6.2. Overall, VMT and total trips are nearly identical. Summaries by VMT, volume and facility type are found below.</p>
+<div id="volume---total-daily-flow" class="section level1">
+<h1>Volume - Total Daily Flow</h1>
+<div id="mpo" class="section level2">
+<h2>MPO</h2>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+TRMv6.2 Total Volume by MPO
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+MPO_Tag
+</th>
+<th style="text-align:right;">
+Total_Volume
+</th>
+<th style="text-align:right;">
+Total_Counts
+</th>
+<th style="text-align:right;">
+Count
+</th>
+<th style="text-align:right;">
+PctDiff
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+CAMPO
+</td>
+<td style="text-align:right;">
+31804488
+</td>
+<td style="text-align:right;">
+33161360
+</td>
+<td style="text-align:right;">
+2322
+</td>
+<td style="text-align:right;">
+-0.0426629
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DCHC
+</td>
+<td style="text-align:right;">
+15768182
+</td>
+<td style="text-align:right;">
+16117220
+</td>
+<td style="text-align:right;">
+1140
+</td>
+<td style="text-align:right;">
+-0.0221356
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+None
+</td>
+<td style="text-align:right;">
+4956044
+</td>
+<td style="text-align:right;">
+4885010
+</td>
+<td style="text-align:right;">
+918
+</td>
+<td style="text-align:right;">
+0.0143327
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:right;">
+52528714
+</td>
+<td style="text-align:right;">
+54163590
+</td>
+<td style="text-align:right;">
+4380
+</td>
+<td style="text-align:right;">
+-0.0311235
+</td>
+</tr>
+</tbody>
+</table>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+TRMG2 Total Volume by MPO
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+MPO_Tag
+</th>
+<th style="text-align:right;">
+Total_Volume
+</th>
+<th style="text-align:right;">
+Total_Counts
+</th>
+<th style="text-align:right;">
+Count
+</th>
+<th style="text-align:right;">
+PctDiff
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+CAMPO
+</td>
+<td style="text-align:right;">
+33974991
+</td>
+<td style="text-align:right;">
+33307230
+</td>
+<td style="text-align:right;">
+2367
+</td>
+<td style="text-align:right;">
+0.0196545
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DCHC
+</td>
+<td style="text-align:right;">
+16686192
+</td>
+<td style="text-align:right;">
+16299307
+</td>
+<td style="text-align:right;">
+1166
+</td>
+<td style="text-align:right;">
+0.0231860
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+None
+</td>
+<td style="text-align:right;">
+5455538
+</td>
+<td style="text-align:right;">
+5949920
+</td>
+<td style="text-align:right;">
+1047
+</td>
+<td style="text-align:right;">
+-0.0906203
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:right;">
+56116721
+</td>
+<td style="text-align:right;">
+55556457
+</td>
+<td style="text-align:right;">
+4580
+</td>
+<td style="text-align:right;">
+0.0099839
+</td>
+</tr>
+</tbody>
+</table>
+<div id="htmlwidget-f207f6ba9038e6dfa074" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f207f6ba9038e6dfa074">{"x":{"data":[{"orientation":"v","width":[0.9,0.9,0.9],"base":[0,0,0],"x":[2,3,1],"y":[0.0638853163697057,0.0550161615936322,0.0915572398254472],"text":["reorder(MPO, -PctDiff): CAMPO<br />PctDiff: 0.06388532","reorder(MPO, -PctDiff): DCHC<br />PctDiff: 0.05501616","reorder(MPO, -PctDiff): None<br />PctDiff: 0.09155724"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(89,89,89,1)","line":{"width":1.88976377952756,"color":"transparent"}},"showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.7625570776256,"r":7.30593607305936,"b":25.5707762557078,"l":54.7945205479452},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"MPO Level Total Daily Volume Pct Difference","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,3.6],"tickmode":"array","ticktext":["None","CAMPO","DCHC"],"tickvals":[1,2,3],"categoryorder":"array","categoryarray":["None","CAMPO","DCHC"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":true,"linecolor":"rgba(0,0,0,1)","linewidth":0.66417600664176,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"y","title":{"text":"","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.00457786199127236,0.0961351018167195],"tickmode":"array","ticktext":["0.000","0.025","0.050","0.075"],"tickvals":[0,0.025,0.05,0.075],"categoryorder":"array","categoryarray":["0.000","0.025","0.050","0.075"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":true,"linecolor":"rgba(0,0,0,1)","linewidth":0.66417600664176,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"x","title":{"text":"PctDiff","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"3db450bb386e":{"x":{},"y":{},"type":"bar"}},"cur_data":"3db450bb386e","visdat":{"3db450bb386e":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="county" class="section level2">
+<h2>County</h2>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+TRMv6.2 Total Volume by County
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+COUNTY
+</th>
+<th style="text-align:right;">
+Total_Volume
+</th>
+<th style="text-align:right;">
+Total_Counts
+</th>
+<th style="text-align:right;">
+Count
+</th>
+<th style="text-align:right;">
+PctDiff
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+alamance
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+chatham
+</td>
+<td style="text-align:right;">
+845870.5
+</td>
+<td style="text-align:right;">
+800100
+</td>
+<td style="text-align:right;">
+142
+</td>
+<td style="text-align:right;">
+0.0541105
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+durham
+</td>
+<td style="text-align:right;">
+12016012.0
+</td>
+<td style="text-align:right;">
+12616470
+</td>
+<td style="text-align:right;">
+809
+</td>
+<td style="text-align:right;">
+-0.0499715
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+franklin
+</td>
+<td style="text-align:right;">
+979763.4
+</td>
+<td style="text-align:right;">
+1091880
+</td>
+<td style="text-align:right;">
+225
+</td>
+<td style="text-align:right;">
+-0.1144323
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+granville
+</td>
+<td style="text-align:right;">
+674119.0
+</td>
+<td style="text-align:right;">
+673990
+</td>
+<td style="text-align:right;">
+138
+</td>
+<td style="text-align:right;">
+0.0001914
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+harnett
+</td>
+<td style="text-align:right;">
+728257.7
+</td>
+<td style="text-align:right;">
+593780
+</td>
+<td style="text-align:right;">
+144
+</td>
+<td style="text-align:right;">
+0.1846567
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+johnston
+</td>
+<td style="text-align:right;">
+3509072.8
+</td>
+<td style="text-align:right;">
+3440690
+</td>
+<td style="text-align:right;">
+440
+</td>
+<td style="text-align:right;">
+0.0194874
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+nash
+</td>
+<td style="text-align:right;">
+124308.5
+</td>
+<td style="text-align:right;">
+110000
+</td>
+<td style="text-align:right;">
+29
+</td>
+<td style="text-align:right;">
+0.1151050
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+orange
+</td>
+<td style="text-align:right;">
+4007723.6
+</td>
+<td style="text-align:right;">
+3709140
+</td>
+<td style="text-align:right;">
+421
+</td>
+<td style="text-align:right;">
+0.0745020
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+person
+</td>
+<td style="text-align:right;">
+644518.2
+</td>
+<td style="text-align:right;">
+820930
+</td>
+<td style="text-align:right;">
+186
+</td>
+<td style="text-align:right;">
+-0.2737112
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+wake
+</td>
+<td style="text-align:right;">
+28884130.1
+</td>
+<td style="text-align:right;">
+30195530
+</td>
+<td style="text-align:right;">
+1808
+</td>
+<td style="text-align:right;">
+-0.0454021
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:right;">
+52413775.8
+</td>
+<td style="text-align:right;">
+54052510
+</td>
+<td style="text-align:right;">
+4342
+</td>
+<td style="text-align:right;">
+-0.0312653
+</td>
+</tr>
+</tbody>
+</table>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+TRMG2 Total Volume by County
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+County
+</th>
+<th style="text-align:right;">
+Total_Volume
+</th>
+<th style="text-align:right;">
+Total_Counts
+</th>
+<th style="text-align:right;">
+Count
+</th>
+<th style="text-align:right;">
+PctDiff
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+alamance
+</td>
+<td style="text-align:right;">
+875218.15
+</td>
+<td style="text-align:right;">
+918000
+</td>
+<td style="text-align:right;">
+61
+</td>
+<td style="text-align:right;">
+-0.0488814
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+chatham
+</td>
+<td style="text-align:right;">
+912262.99
+</td>
+<td style="text-align:right;">
+830880
+</td>
+<td style="text-align:right;">
+145
+</td>
+<td style="text-align:right;">
+0.0892100
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+durham
+</td>
+<td style="text-align:right;">
+12969703.99
+</td>
+<td style="text-align:right;">
+12761537
+</td>
+<td style="text-align:right;">
+828
+</td>
+<td style="text-align:right;">
+0.0160503
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+franklin
+</td>
+<td style="text-align:right;">
+1020690.38
+</td>
+<td style="text-align:right;">
+1052190
+</td>
+<td style="text-align:right;">
+221
+</td>
+<td style="text-align:right;">
+-0.0308611
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+granville
+</td>
+<td style="text-align:right;">
+628106.70
+</td>
+<td style="text-align:right;">
+702670
+</td>
+<td style="text-align:right;">
+134
+</td>
+<td style="text-align:right;">
+-0.1187112
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+harnett
+</td>
+<td style="text-align:right;">
+652223.98
+</td>
+<td style="text-align:right;">
+585480
+</td>
+<td style="text-align:right;">
+140
+</td>
+<td style="text-align:right;">
+0.1023329
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+johnston
+</td>
+<td style="text-align:right;">
+3436414.09
+</td>
+<td style="text-align:right;">
+3686610
+</td>
+<td style="text-align:right;">
+505
+</td>
+<td style="text-align:right;">
+-0.0728073
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+nash
+</td>
+<td style="text-align:right;">
+66200.31
+</td>
+<td style="text-align:right;">
+58670
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+0.1137504
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+orange
+</td>
+<td style="text-align:right;">
+3925944.75
+</td>
+<td style="text-align:right;">
+3705250
+</td>
+<td style="text-align:right;">
+447
+</td>
+<td style="text-align:right;">
+0.0562144
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+person
+</td>
+<td style="text-align:right;">
+527404.48
+</td>
+<td style="text-align:right;">
+825020
+</td>
+<td style="text-align:right;">
+191
+</td>
+<td style="text-align:right;">
+-0.5643022
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+wake
+</td>
+<td style="text-align:right;">
+31020631.33
+</td>
+<td style="text-align:right;">
+30336900
+</td>
+<td style="text-align:right;">
+1846
+</td>
+<td style="text-align:right;">
+0.0220412
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:right;">
+56034801.14
+</td>
+<td style="text-align:right;">
+55463207
+</td>
+<td style="text-align:right;">
+4548
+</td>
+<td style="text-align:right;">
+0.0102007
+</td>
+</tr>
+</tbody>
+</table>
+<div id="htmlwidget-a130c1cbbbfd230e4ca5" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a130c1cbbbfd230e4ca5">{"x":{"data":[{"orientation":"v","width":[0.449999999999999,0.449999999999999,0.45,0.449999999999999,0.449999999999999,0.449999999999999,0.45,0.449999999999999,0.45,0.449999999999999,0.45],"base":[0,0,0,0,0,0,0,0,0,0,0],"x":[9.775,5.775,1.775,4.775,7.775,6.775,3.775,10.775,2.775,8.775,0.775],"y":[875218.149586064,912262.987755183,12969703.9949285,1020690.37667966,628106.699188638,652223.976057919,3436414.08646374,66200.3124306909,3925944.74892882,527404.481168611,31020631.3254274],"text":["reorder(County, -Total_Volume): alamance<br />Total_Volume:   875218.15<br />Model: g2","reorder(County, -Total_Volume): chatham<br />Total_Volume:   912262.99<br />Model: g2","reorder(County, -Total_Volume): durham<br />Total_Volume: 12969703.99<br />Model: g2","reorder(County, -Total_Volume): franklin<br />Total_Volume:  1020690.38<br />Model: g2","reorder(County, -Total_Volume): granville<br />Total_Volume:   628106.70<br />Model: g2","reorder(County, -Total_Volume): harnett<br />Total_Volume:   652223.98<br />Model: g2","reorder(County, -Total_Volume): johnston<br />Total_Volume:  3436414.09<br />Model: g2","reorder(County, -Total_Volume): nash<br />Total_Volume:    66200.31<br />Model: g2","reorder(County, -Total_Volume): orange<br />Total_Volume:  3925944.75<br />Model: g2","reorder(County, -Total_Volume): person<br />Total_Volume:   527404.48<br />Model: g2","reorder(County, -Total_Volume): wake<br />Total_Volume: 31020631.33<br />Model: g2"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"g2","legendgroup":"g2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":[0.449999999999999,0.449999999999999,0.45,0.449999999999999,0.449999999999999,0.449999999999999,0.45,0.449999999999999,0.45,0.449999999999999,0.45],"base":[0,0,0,0,0,0,0,0,0,0,0],"x":[10.225,6.225,2.225,5.225,8.225,7.225,4.225,11.225,3.225,9.225,1.225],"y":[0,845870.512101669,12016011.9594385,979763.419006881,674119.02935502,728257.695672501,3509072.78742303,124308.537916385,4007723.58830486,644518.159500057,28884130.1364335],"text":["reorder(County, -Total_Volume): alamance<br />Total_Volume:        0.00<br />Model: v6","reorder(County, -Total_Volume): chatham<br />Total_Volume:   845870.51<br />Model: v6","reorder(County, -Total_Volume): durham<br />Total_Volume: 12016011.96<br />Model: v6","reorder(County, -Total_Volume): franklin<br />Total_Volume:   979763.42<br />Model: v6","reorder(County, -Total_Volume): granville<br />Total_Volume:   674119.03<br />Model: v6","reorder(County, -Total_Volume): harnett<br />Total_Volume:   728257.70<br />Model: v6","reorder(County, -Total_Volume): johnston<br />Total_Volume:  3509072.79<br />Model: v6","reorder(County, -Total_Volume): nash<br />Total_Volume:   124308.54<br />Model: v6","reorder(County, -Total_Volume): orange<br />Total_Volume:  4007723.59<br />Model: v6","reorder(County, -Total_Volume): person<br />Total_Volume:   644518.16<br />Model: v6","reorder(County, -Total_Volume): wake<br />Total_Volume: 28884130.14<br />Model: v6"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(0,191,196,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"v6","legendgroup":"v6","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.7625570776256,"r":7.30593607305936,"b":42.1887382227497,"l":54.7945205479452},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"County Level Total Daily Volume Pct Difference","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,11.6],"tickmode":"array","ticktext":["wake","durham","orange","johnston","franklin","chatham","harnett","granville","person","alamance","nash"],"tickvals":[1,2,3,4,5,6,7,8,9,10,11],"categoryorder":"array","categoryarray":["wake","durham","orange","johnston","franklin","chatham","harnett","granville","person","alamance","nash"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":45,"showline":true,"linecolor":"rgba(0,0,0,1)","linewidth":0.66417600664176,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"y","title":{"text":"","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-1551031.56627137,32571662.8916988],"tickmode":"array","ticktext":["0e+00","1e+07","2e+07","3e+07"],"tickvals":[0,10000000,20000000,30000000],"categoryorder":"array","categoryarray":["0e+00","1e+07","2e+07","3e+07"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":true,"linecolor":"rgba(0,0,0,1)","linewidth":0.66417600664176,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"x","title":{"text":"Total_Volume","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"y":0.96751968503937},"annotations":[{"text":"Model","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"3db47c4c36b4":{"x":{},"y":{},"fill":{},"type":"bar"}},"cur_data":"3db47c4c36b4","visdat":{"3db47c4c36b4":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="fc_group" class="section level2">
+<h2>FC_Group</h2>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+TRMv6.2 Total Volume by Facility
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+FCGROUP_Tag
+</th>
+<th style="text-align:right;">
+Total_Volume
+</th>
+<th style="text-align:right;">
+Total_Counts
+</th>
+<th style="text-align:right;">
+Count
+</th>
+<th style="text-align:right;">
+PctDiff
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Local
+</td>
+<td style="text-align:right;">
+4735796
+</td>
+<td style="text-align:right;">
+4655830
+</td>
+<td style="text-align:right;">
+1130
+</td>
+<td style="text-align:right;">
+0.0168854
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Collector
+</td>
+<td style="text-align:right;">
+6441994
+</td>
+<td style="text-align:right;">
+6623550
+</td>
+<td style="text-align:right;">
+1084
+</td>
+<td style="text-align:right;">
+-0.0281832
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Minor Arterial
+</td>
+<td style="text-align:right;">
+13151478
+</td>
+<td style="text-align:right;">
+13397660
+</td>
+<td style="text-align:right;">
+1015
+</td>
+<td style="text-align:right;">
+-0.0187189
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Major Arterial
+</td>
+<td style="text-align:right;">
+13835061
+</td>
+<td style="text-align:right;">
+15284820
+</td>
+<td style="text-align:right;">
+763
+</td>
+<td style="text-align:right;">
+-0.1047888
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Freeway
+</td>
+<td style="text-align:right;">
+14257957
+</td>
+<td style="text-align:right;">
+14084500
+</td>
+<td style="text-align:right;">
+349
+</td>
+<td style="text-align:right;">
+0.0121656
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:right;">
+52422286
+</td>
+<td style="text-align:right;">
+54046360
+</td>
+<td style="text-align:right;">
+4341
+</td>
+<td style="text-align:right;">
+-0.0309806
+</td>
+</tr>
+</tbody>
+</table>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+TRMG2 Total Volume by Facility
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+HCMType
+</th>
+<th style="text-align:right;">
+Total_Volume
+</th>
+<th style="text-align:right;">
+Total_Counts
+</th>
+<th style="text-align:right;">
+Count
+</th>
+<th style="text-align:right;">
+PctDiff
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+TLHighway
+</td>
+<td style="text-align:right;">
+814139.5
+</td>
+<td style="text-align:right;">
+716100
+</td>
+<td style="text-align:right;">
+79
+</td>
+<td style="text-align:right;">
+0.1204210
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Local
+</td>
+<td style="text-align:right;">
+1217696.3
+</td>
+<td style="text-align:right;">
+1164780
+</td>
+<td style="text-align:right;">
+453
+</td>
+<td style="text-align:right;">
+0.0434561
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MajorCollector
+</td>
+<td style="text-align:right;">
+1300728.7
+</td>
+<td style="text-align:right;">
+1364260
+</td>
+<td style="text-align:right;">
+274
+</td>
+<td style="text-align:right;">
+-0.0488428
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MLHighway
+</td>
+<td style="text-align:right;">
+2394673.5
+</td>
+<td style="text-align:right;">
+2297000
+</td>
+<td style="text-align:right;">
+115
+</td>
+<td style="text-align:right;">
+0.0407878
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Collector
+</td>
+<td style="text-align:right;">
+2644544.0
+</td>
+<td style="text-align:right;">
+2879440
+</td>
+<td style="text-align:right;">
+820
+</td>
+<td style="text-align:right;">
+-0.0888229
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arterial
+</td>
+<td style="text-align:right;">
+13139758.1
+</td>
+<td style="text-align:right;">
+13604123
+</td>
+<td style="text-align:right;">
+1601
+</td>
+<td style="text-align:right;">
+-0.0353404
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Freeway
+</td>
+<td style="text-align:right;">
+14787505.0
+</td>
+<td style="text-align:right;">
+14060257
+</td>
+<td style="text-align:right;">
+359
+</td>
+<td style="text-align:right;">
+0.0491799
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MajorArterial
+</td>
+<td style="text-align:right;">
+19678396.5
+</td>
+<td style="text-align:right;">
+19331197
+</td>
+<td style="text-align:right;">
+876
+</td>
+<td style="text-align:right;">
+0.0176437
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:right;">
+55977441.5
+</td>
+<td style="text-align:right;">
+55417157
+</td>
+<td style="text-align:right;">
+4577
+</td>
+<td style="text-align:right;">
+0.0100091
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="cutlinescreenlines" class="section level2">
+<h2>Cutline/Screenlines</h2>
+<p>TRMG2 Screenlines:</p>
+<p><img src="TRMG2%20SLs.PNG" /></p>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+TRMv6.2 Total Volume by Screenline
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+SL_Tag
+</th>
+<th style="text-align:right;">
+Total_Volume
+</th>
+<th style="text-align:right;">
+Total_Counts
+</th>
+<th style="text-align:right;">
+Count
+</th>
+<th style="text-align:right;">
+PctDiff
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+I-40
+</td>
+<td style="text-align:right;">
+1366435.5
+</td>
+<td style="text-align:right;">
+1364840
+</td>
+<td style="text-align:right;">
+76
+</td>
+<td style="text-align:right;">
+0.0011676
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+I-85
+</td>
+<td style="text-align:right;">
+373408.4
+</td>
+<td style="text-align:right;">
+397900
+</td>
+<td style="text-align:right;">
+37
+</td>
+<td style="text-align:right;">
+-0.0655894
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wake/Durham County Line
+</td>
+<td style="text-align:right;">
+623487.9
+</td>
+<td style="text-align:right;">
+660500
+</td>
+<td style="text-align:right;">
+34
+</td>
+<td style="text-align:right;">
+-0.0593629
+</td>
+</tr>
+</tbody>
+</table>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+TRMv6.2 Total Volume by Cutline
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Cut_Line
+</th>
+<th style="text-align:right;">
+Cutline
+</th>
+<th style="text-align:right;">
+Total_Volume
+</th>
+<th style="text-align:right;">
+Total_Counts
+</th>
+<th style="text-align:right;">
+Count
+</th>
+<th style="text-align:right;">
+PctDiff
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Southwest Durham
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+218687.56
+</td>
+<td style="text-align:right;">
+208500
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+0.0465850
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Downtown Durham Loop
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+502879.52
+</td>
+<td style="text-align:right;">
+548200
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:right;">
+-0.0901219
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Johnston County
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+315294.98
+</td>
+<td style="text-align:right;">
+290390
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:right;">
+0.0789895
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Chatham County
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+42745.66
+</td>
+<td style="text-align:right;">
+40600
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0.0501960
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+North Raleigh
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+723814.37
+</td>
+<td style="text-align:right;">
+744890
+</td>
+<td style="text-align:right;">
+38
+</td>
+<td style="text-align:right;">
+-0.0291175
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Eastern Wake
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+466298.95
+</td>
+<td style="text-align:right;">
+514800
+</td>
+<td style="text-align:right;">
+37
+</td>
+<td style="text-align:right;">
+-0.1040128
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+US-1 South
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+253017.13
+</td>
+<td style="text-align:right;">
+257800
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+-0.0189033
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+North Wake
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+265991.52
+</td>
+<td style="text-align:right;">
+249600
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+0.0616242
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Along US 70
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+190236.92
+</td>
+<td style="text-align:right;">
+227800
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+-0.1974542
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Along I440E and W of I-40
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+388798.87
+</td>
+<td style="text-align:right;">
+409900
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+-0.0542726
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Chatham/Wake Line
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+63151.99
+</td>
+<td style="text-align:right;">
+60370
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+0.0440524
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wake/Harnett Line
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+68517.06
+</td>
+<td style="text-align:right;">
+54400
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+0.2060371
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+US 64 East
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+43101.54
+</td>
+<td style="text-align:right;">
+36400
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+0.1554827
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Durham/Orange Line
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+356132.96
+</td>
+<td style="text-align:right;">
+328880
+</td>
+<td style="text-align:right;">
+23
+</td>
+<td style="text-align:right;">
+0.0765247
+</td>
+</tr>
+</tbody>
+</table>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+TRMG2 Total Volume by Screenline and Cutline
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Screen_Line
+</th>
+<th style="text-align:right;">
+ScreenlineNum
+</th>
+<th style="text-align:right;">
+Total_Volume
+</th>
+<th style="text-align:right;">
+Total_Counts
+</th>
+<th style="text-align:right;">
+Count
+</th>
+<th style="text-align:right;">
+PctDiff
+</th>
+<th style="text-align:left;">
+Type
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Wake/Harnett Line
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+87572.97
+</td>
+<td style="text-align:right;">
+74580
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+0.1483673
+</td>
+<td style="text-align:left;">
+Screen
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wake/Johnston Line
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+292293.58
+</td>
+<td style="text-align:right;">
+244950
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:right;">
+0.1619727
+</td>
+<td style="text-align:left;">
+Screen
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wake/Franklin
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+114286.73
+</td>
+<td style="text-align:right;">
+106250
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+0.0703208
+</td>
+<td style="text-align:left;">
+Cut
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wake/Durham
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+389170.25
+</td>
+<td style="text-align:right;">
+393300
+</td>
+<td style="text-align:right;">
+29
+</td>
+<td style="text-align:right;">
+-0.0106117
+</td>
+<td style="text-align:left;">
+Cut
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Southern Durham/Chatham
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+61967.55
+</td>
+<td style="text-align:right;">
+50400
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+0.1866711
+</td>
+<td style="text-align:left;">
+Cut
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Durham/Orange
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+375870.26
+</td>
+<td style="text-align:right;">
+327600
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:right;">
+0.1284227
+</td>
+<td style="text-align:left;">
+Screen
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Durham + Orange/Person
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+21941.43
+</td>
+<td style="text-align:right;">
+23770
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+-0.0833389
+</td>
+<td style="text-align:left;">
+Cut
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Durham/Granville
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+63843.34
+</td>
+<td style="text-align:right;">
+55500
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0.1306846
+</td>
+<td style="text-align:left;">
+Cut
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Downtown Durham Loop
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+519814.68
+</td>
+<td style="text-align:right;">
+518300
+</td>
+<td style="text-align:right;">
+39
+</td>
+<td style="text-align:right;">
+0.0029139
+</td>
+<td style="text-align:left;">
+Cut
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+I-40
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+1430275.89
+</td>
+<td style="text-align:right;">
+1374840
+</td>
+<td style="text-align:right;">
+76
+</td>
+<td style="text-align:right;">
+0.0387589
+</td>
+<td style="text-align:left;">
+Cut
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+I-85
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+337677.77
+</td>
+<td style="text-align:right;">
+367600
+</td>
+<td style="text-align:right;">
+35
+</td>
+<td style="text-align:right;">
+-0.0886118
+</td>
+<td style="text-align:left;">
+Cut
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="vmt" class="section level1">
+<h1>VMT</h1>
+<div id="mpo-1" class="section level2">
+<h2>MPO</h2>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+TRMv6.2 Total VMT by MPO
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+MPO_Tag
+</th>
+<th style="text-align:right;">
+Total_VMT
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+CAMPO
+</td>
+<td style="text-align:right;">
+20215737
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DCHC
+</td>
+<td style="text-align:right;">
+6963718
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+None
+</td>
+<td style="text-align:right;">
+4545159
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:right;">
+31724613
+</td>
+</tr>
+</tbody>
+</table>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+TRMG2 Total VMT by MPO
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+MPO_Tag
+</th>
+<th style="text-align:right;">
+Total_VMT
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+CAMPO
+</td>
+<td style="text-align:right;">
+36385516
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DCHC
+</td>
+<td style="text-align:right;">
+14649340
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+None
+</td>
+<td style="text-align:right;">
+8731138
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:right;">
+59765995
+</td>
+</tr>
+</tbody>
+</table>
+<div id="htmlwidget-8726e3aa38b6a81c30bd" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8726e3aa38b6a81c30bd">{"x":{"data":[{"orientation":"v","width":[0.45,0.45,0.45],"base":[0,0,0],"x":[0.775,1.775,2.775],"y":[36385516.3503199,14649339.9534119,8731138.2345482],"text":["reorder(MPO_Tag, -Total_VMT): CAMPO<br />Total_VMT: 36385516<br />Model: g2","reorder(MPO_Tag, -Total_VMT): DCHC<br />Total_VMT: 14649340<br />Model: g2","reorder(MPO_Tag, -Total_VMT): None<br />Total_VMT:  8731138<br />Model: g2"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"g2","legendgroup":"g2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":[0.45,0.45,0.45],"base":[0,0,0],"x":[1.225,2.225,3.225],"y":[20215737.1357828,6963717.80150356,4545158.53512602],"text":["reorder(MPO_Tag, -Total_VMT): CAMPO<br />Total_VMT: 20215737<br />Model: v6","reorder(MPO_Tag, -Total_VMT): DCHC<br />Total_VMT:  6963718<br />Model: v6","reorder(MPO_Tag, -Total_VMT): None<br />Total_VMT:  4545159<br />Model: v6"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(0,191,196,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"v6","legendgroup":"v6","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.7625570776256,"r":7.30593607305936,"b":25.5707762557078,"l":54.7945205479452},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"MPO VMT","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,3.6],"tickmode":"array","ticktext":["CAMPO","DCHC","None"],"tickvals":[1,2,3],"categoryorder":"array","categoryarray":["CAMPO","DCHC","None"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":true,"linecolor":"rgba(0,0,0,1)","linewidth":0.66417600664176,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"y","title":{"text":"","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-1819275.817516,38204792.1678359],"tickmode":"array","ticktext":["0e+00","1e+07","2e+07","3e+07"],"tickvals":[0,10000000,20000000,30000000],"categoryorder":"array","categoryarray":["0e+00","1e+07","2e+07","3e+07"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":true,"linecolor":"rgba(0,0,0,1)","linewidth":0.66417600664176,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"x","title":{"text":"Total_VMT","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"y":0.96751968503937},"annotations":[{"text":"Model","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"3db41cc74014":{"x":{},"y":{},"fill":{},"type":"bar"}},"cur_data":"3db41cc74014","visdat":{"3db41cc74014":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="county-1" class="section level2">
+<h2>County</h2>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+TRMv6.2 Total Volume by County
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+COUNTY
+</th>
+<th style="text-align:right;">
+Total_VMT
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+alamance
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+chatham
+</td>
+<td style="text-align:right;">
+1199129.35
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+durham
+</td>
+<td style="text-align:right;">
+4624497.74
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+franklin
+</td>
+<td style="text-align:right;">
+1386899.91
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+granville
+</td>
+<td style="text-align:right;">
+778593.59
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+harnett
+</td>
+<td style="text-align:right;">
+1062841.60
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+johnston
+</td>
+<td style="text-align:right;">
+3114046.71
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+nash
+</td>
+<td style="text-align:right;">
+77695.71
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+orange
+</td>
+<td style="text-align:right;">
+2367945.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+person
+</td>
+<td style="text-align:right;">
+726642.31
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+wake
+</td>
+<td style="text-align:right;">
+16232370.88
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:right;">
+31570662.79
+</td>
+</tr>
+</tbody>
+</table>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+TRMG2 Total Volume by County
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+County
+</th>
+<th style="text-align:right;">
+Total_VMT
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+alamance
+</td>
+<td style="text-align:right;">
+993303.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+chatham
+</td>
+<td style="text-align:right;">
+1908876.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+durham
+</td>
+<td style="text-align:right;">
+9896837.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+franklin
+</td>
+<td style="text-align:right;">
+1562436.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+granville
+</td>
+<td style="text-align:right;">
+1176954.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+harnett
+</td>
+<td style="text-align:right;">
+1001411.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+johnston
+</td>
+<td style="text-align:right;">
+5819437.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+nash
+</td>
+<td style="text-align:right;">
+199840.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+orange
+</td>
+<td style="text-align:right;">
+5146945.8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+person
+</td>
+<td style="text-align:right;">
+592546.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+wake
+</td>
+<td style="text-align:right;">
+31202620.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:right;">
+59501209.1
+</td>
+</tr>
+</tbody>
+</table>
+<div id="htmlwidget-9bf594b23f77aa5f6945" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9bf594b23f77aa5f6945">{"x":{"data":[{"orientation":"v","width":[0.449999999999999,0.449999999999999,0.45,0.449999999999999,0.449999999999999,0.449999999999999,0.45,0.449999999999999,0.45,0.449999999999999,0.45],"base":[0,0,0,0,0,0,0,0,0,0,0],"x":[9.775,4.775,1.775,5.775,7.775,6.775,2.775,10.775,3.775,8.775,0.775],"y":[993303.299988647,1908876.62803027,9896837.56944227,1562436.32016222,1176954.34710841,1001411.44095944,5819436.96932259,199839.953072594,5146945.83045121,592546.60084446,31202620.1080086],"text":["reorder(County, -Total_VMT): alamance<br />Total_VMT:   993303.30<br />Model: g2","reorder(County, -Total_VMT): chatham<br />Total_VMT:  1908876.63<br />Model: g2","reorder(County, -Total_VMT): durham<br />Total_VMT:  9896837.57<br />Model: g2","reorder(County, -Total_VMT): franklin<br />Total_VMT:  1562436.32<br />Model: g2","reorder(County, -Total_VMT): granville<br />Total_VMT:  1176954.35<br />Model: g2","reorder(County, -Total_VMT): harnett<br />Total_VMT:  1001411.44<br />Model: g2","reorder(County, -Total_VMT): johnston<br />Total_VMT:  5819436.97<br />Model: g2","reorder(County, -Total_VMT): nash<br />Total_VMT:   199839.95<br />Model: g2","reorder(County, -Total_VMT): orange<br />Total_VMT:  5146945.83<br />Model: g2","reorder(County, -Total_VMT): person<br />Total_VMT:   592546.60<br />Model: g2","reorder(County, -Total_VMT): wake<br />Total_VMT: 31202620.11<br />Model: g2"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"g2","legendgroup":"g2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":[0.449999999999999,0.449999999999999,0.45,0.449999999999999,0.449999999999999,0.449999999999999,0.45,0.449999999999999,0.45,0.449999999999999,0.45],"base":[0,0,0,0,0,0,0,0,0,0,0],"x":[10.225,5.225,2.225,6.225,8.225,7.225,3.225,11.225,4.225,9.225,1.225],"y":[0,1199129.3532795,4624497.7434743,1386899.9100724,778593.588172471,1062841.60227582,3114046.7090002,77695.70566361,2367944.99542033,726642.30588038,16232370.8788939],"text":["reorder(County, -Total_VMT): alamance<br />Total_VMT:        0.00<br />Model: v6","reorder(County, -Total_VMT): chatham<br />Total_VMT:  1199129.35<br />Model: v6","reorder(County, -Total_VMT): durham<br />Total_VMT:  4624497.74<br />Model: v6","reorder(County, -Total_VMT): franklin<br />Total_VMT:  1386899.91<br />Model: v6","reorder(County, -Total_VMT): granville<br />Total_VMT:   778593.59<br />Model: v6","reorder(County, -Total_VMT): harnett<br />Total_VMT:  1062841.60<br />Model: v6","reorder(County, -Total_VMT): johnston<br />Total_VMT:  3114046.71<br />Model: v6","reorder(County, -Total_VMT): nash<br />Total_VMT:    77695.71<br />Model: v6","reorder(County, -Total_VMT): orange<br />Total_VMT:  2367945.00<br />Model: v6","reorder(County, -Total_VMT): person<br />Total_VMT:   726642.31<br />Model: v6","reorder(County, -Total_VMT): wake<br />Total_VMT: 16232370.88<br />Model: v6"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(0,191,196,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"v6","legendgroup":"v6","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.7625570776256,"r":7.30593607305936,"b":42.1887382227497,"l":54.7945205479452},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"County VMT","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,11.6],"tickmode":"array","ticktext":["wake","durham","johnston","orange","chatham","franklin","harnett","granville","person","alamance","nash"],"tickvals":[1,2,3,4,5,6,7,8,9,10,11],"categoryorder":"array","categoryarray":["wake","durham","johnston","orange","chatham","franklin","harnett","granville","person","alamance","nash"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":45,"showline":true,"linecolor":"rgba(0,0,0,1)","linewidth":0.66417600664176,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"y","title":{"text":"","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-1560131.00540043,32762751.1134091],"tickmode":"array","ticktext":["0e+00","1e+07","2e+07","3e+07"],"tickvals":[0,10000000,20000000,30000000],"categoryorder":"array","categoryarray":["0e+00","1e+07","2e+07","3e+07"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":true,"linecolor":"rgba(0,0,0,1)","linewidth":0.66417600664176,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"x","title":{"text":"Total_VMT","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"y":0.96751968503937},"annotations":[{"text":"Model","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"3db45a95470c":{"x":{},"y":{},"fill":{},"type":"bar"}},"cur_data":"3db45a95470c","visdat":{"3db45a95470c":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="fc_group-1" class="section level2">
+<h2>FC_Group</h2>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+TRMv6.2 Total Volume by Facility
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+FCGROUP_Tag
+</th>
+<th style="text-align:right;">
+Total_VMT
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Freeway
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Local
+</td>
+<td style="text-align:right;">
+2172837
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Collector
+</td>
+<td style="text-align:right;">
+2896243
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Major Arterial
+</td>
+<td style="text-align:right;">
+2968231
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Minor Arterial
+</td>
+<td style="text-align:right;">
+3624656
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:right;">
+11661968
+</td>
+</tr>
+</tbody>
+</table>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+TRMG2 Total Volume by Facility
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+HCMType
+</th>
+<th style="text-align:right;">
+Total_VMT
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Local
+</td>
+<td style="text-align:right;">
+300293.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TLHighway
+</td>
+<td style="text-align:right;">
+329356.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MajorCollector
+</td>
+<td style="text-align:right;">
+330398.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Collector
+</td>
+<td style="text-align:right;">
+637499.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MLHighway
+</td>
+<td style="text-align:right;">
+980543.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arterial
+</td>
+<td style="text-align:right;">
+2731105.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MajorArterial
+</td>
+<td style="text-align:right;">
+3177635.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Freeway
+</td>
+<td style="text-align:right;">
+11396671.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:right;">
+19883504.0
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="volume-group" class="section level2">
+<h2>Volume Group</h2>
+<p>TBD</p>
+</div>
+</div>
+<div id="transit" class="section level1">
+<h1>Transit</h1>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+TRMv6.2 Total Transit Ridership by TOD
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+OPERATOR
+</th>
+<th style="text-align:right;">
+Total_OP
+</th>
+<th style="text-align:right;">
+Total_PK
+</th>
+<th style="text-align:right;">
+Total
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+CAT
+</td>
+<td style="text-align:right;">
+9899.0531
+</td>
+<td style="text-align:right;">
+13954.4857
+</td>
+<td style="text-align:right;">
+23853.5388
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CHT
+</td>
+<td style="text-align:right;">
+13394.6948
+</td>
+<td style="text-align:right;">
+16401.7934
+</td>
+<td style="text-align:right;">
+29796.4883
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CTRAN
+</td>
+<td style="text-align:right;">
+1189.5224
+</td>
+<td style="text-align:right;">
+1407.4559
+</td>
+<td style="text-align:right;">
+2596.9783
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DATA
+</td>
+<td style="text-align:right;">
+11359.4352
+</td>
+<td style="text-align:right;">
+11927.1762
+</td>
+<td style="text-align:right;">
+23286.6113
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Duke
+</td>
+<td style="text-align:right;">
+3715.8149
+</td>
+<td style="text-align:right;">
+4301.9723
+</td>
+<td style="text-align:right;">
+8017.7872
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NCSU
+</td>
+<td style="text-align:right;">
+7252.3925
+</td>
+<td style="text-align:right;">
+4621.1928
+</td>
+<td style="text-align:right;">
+11873.5852
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+OPT
+</td>
+<td style="text-align:right;">
+325.1405
+</td>
+<td style="text-align:right;">
+251.0703
+</td>
+<td style="text-align:right;">
+576.2108
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TTA
+</td>
+<td style="text-align:right;">
+2793.9636
+</td>
+<td style="text-align:right;">
+14240.5786
+</td>
+<td style="text-align:right;">
+17034.5422
+</td>
+</tr>
+</tbody>
+</table>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+TRMG2 Total Transit Ridership by TOD
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Agency
+</th>
+<th style="text-align:right;">
+AM
+</th>
+<th style="text-align:right;">
+MD
+</th>
+<th style="text-align:right;">
+PM
+</th>
+<th style="text-align:right;">
+NT
+</th>
+<th style="text-align:right;">
+Total
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Chapel Hill Transit
+</td>
+<td style="text-align:right;">
+6316.585946
+</td>
+<td style="text-align:right;">
+5778.59395
+</td>
+<td style="text-align:right;">
+8539.814055
+</td>
+<td style="text-align:right;">
+5899.50712
+</td>
+<td style="text-align:right;">
+26534.501080
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Chatham Transit
+</td>
+<td style="text-align:right;">
+2.209048
+</td>
+<td style="text-align:right;">
+0.00000
+</td>
+<td style="text-align:right;">
+1.573097
+</td>
+<td style="text-align:right;">
+0.00000
+</td>
+<td style="text-align:right;">
+3.782145
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Duke
+</td>
+<td style="text-align:right;">
+2878.575769
+</td>
+<td style="text-align:right;">
+2577.41527
+</td>
+<td style="text-align:right;">
+3505.813238
+</td>
+<td style="text-align:right;">
+2674.82429
+</td>
+<td style="text-align:right;">
+11636.628570
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GoCary
+</td>
+<td style="text-align:right;">
+394.533364
+</td>
+<td style="text-align:right;">
+652.47471
+</td>
+<td style="text-align:right;">
+631.363632
+</td>
+<td style="text-align:right;">
+627.44636
+</td>
+<td style="text-align:right;">
+2305.818063
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GoDurham
+</td>
+<td style="text-align:right;">
+3353.605610
+</td>
+<td style="text-align:right;">
+7191.61067
+</td>
+<td style="text-align:right;">
+5607.917597
+</td>
+<td style="text-align:right;">
+6150.10307
+</td>
+<td style="text-align:right;">
+22303.236948
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GoRaleigh
+</td>
+<td style="text-align:right;">
+4432.955456
+</td>
+<td style="text-align:right;">
+7506.93100
+</td>
+<td style="text-align:right;">
+7744.810579
+</td>
+<td style="text-align:right;">
+6272.74533
+</td>
+<td style="text-align:right;">
+25957.442371
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GoRaleigh/GoTriangle
+</td>
+<td style="text-align:right;">
+137.381167
+</td>
+<td style="text-align:right;">
+0.00000
+</td>
+<td style="text-align:right;">
+247.138422
+</td>
+<td style="text-align:right;">
+0.00000
+</td>
+<td style="text-align:right;">
+384.519589
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GoTriangle
+</td>
+<td style="text-align:right;">
+4589.713367
+</td>
+<td style="text-align:right;">
+2654.05478
+</td>
+<td style="text-align:right;">
+7258.499514
+</td>
+<td style="text-align:right;">
+2264.16985
+</td>
+<td style="text-align:right;">
+16766.437513
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NCSU Wolfline
+</td>
+<td style="text-align:right;">
+3410.702171
+</td>
+<td style="text-align:right;">
+3456.39717
+</td>
+<td style="text-align:right;">
+3808.595557
+</td>
+<td style="text-align:right;">
+3841.87703
+</td>
+<td style="text-align:right;">
+14517.571935
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Orange County Public Transit
+</td>
+<td style="text-align:right;">
+24.042385
+</td>
+<td style="text-align:right;">
+30.09061
+</td>
+<td style="text-align:right;">
+8.247979
+</td>
+<td style="text-align:right;">
+33.30049
+</td>
+<td style="text-align:right;">
+95.681463
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
