@@ -12,3 +12,8 @@ TRMv6.2 vs TRMG2 2016 Validated Year
 Test:
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/JFord-DCHCMPO/TRMG2_Analyses/HEAD?urlpath=voila%2Frender%2FTest.ipynb)
+
+
+Highway Assignment BY:
+
+https://jford-dchcmpo.github.io/TRMG2_Analyses/
