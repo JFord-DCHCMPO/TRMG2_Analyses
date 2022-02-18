@@ -1,0 +1,747 @@
+---
+title: "TRMG2 Base Year Evaluation"
+author: "Jacob Ford DCHC MPO"
+date: "2/14/2022"
+output: html_document
+---
+
+This document analyzes the initial base year (2016) model output for the TRMG2 against the TRMv6.2. Note: The TRMG2 2016 base year will be updated to the 2020 upon delivery. Additionally, the TRMG2 model includes the expansion into Alamance and Johnston Counties, hence county level totals may deviate from totals in TRMv6.2. Overall, VMT and total trips are nearly identical. Summaries by VMT, volume and facility type are found below. 
+
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+library(caliperR)
+library(tcadr)
+library(janitor)
+library(dplyr)
+library(data.table)
+library(dplyr)
+library(ggpmisc)
+library(plotly)
+library(data.table)
+library(knitr)
+library(kableExtra)
+
+
+g2 <-  read_tcad("C:/Users/JacobFo/TRMG2_v0.2/scenarios/base_2016/output/networks/scenario_links.bin") %>%
+  select(ID, HCMType, DailyCount, Total_Flow_Daily, Total_VMT_Daily, County, AreaType, MPO, Total_Delay_Daily, Screenline)
+
+g2 <- g2 %>%
+  filter(Total_Flow_Daily > 0) 
+
+g2$County <- tolower(g2$County)
+
+
+v <- read_tcad("C:/Users/JacobFo/OneDrive - City of Durham/Full Model Runs/Original TRMv6.2_2016 - Copy/Input/Highway/Highway_Line.bin") 
+
+##Add VMT field
+v$ToT_VMT <- (v$ABAMVMT+ v$ABMDVMT+ v$ABNTVMT+ v$ABPMVMT+v$BAAMVMT+v$BAMDVMT+ v$BANTVMT+ v$BAPMVMT)
+
+
+##get rid of NA values, set to zero:
+
+v[is.na(v)]<-0
+
+v$COUNTY <- tolower(v$COUNTY)
+
+
+##Add Daily Counts file: 
+v_counts <- read_tcad("C:/Users/JacobFo/OneDrive - City of Durham/Full Model Runs/Original TRMv6.2_2016 - Copy/EvalModule/TRM6_Count_2016_Observed.bin") %>%
+  select(ID, Daily_Counts, Screenline, Cutline)
+
+
+##Final TRMv6.2 line layer with counts
+add_counts <- left_join(v, v_counts)
+
+
+```
+
+# Volume - Total Daily Flow
+
+## MPO
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+
+temp <- add_counts %>%
+  filter(Daily_Counts > 0) %>%
+  mutate(MPO_Tag = case_when(
+    is.na(MPO) ~ 'None',
+    MPO == 0 ~ 'None',
+    MPO == 1 ~ 'CAMPO',
+    MPO == 2 ~ 'DCHC'
+  )) %>%
+  group_by(MPO_Tag) %>%
+ # filter(Daily_Counts > 0) %>%
+   summarise(
+    Total_Volume = sum(ToTDlyVol, na.rm=T),
+    Total_Counts = sum(Daily_Counts, na.rm=T),
+    Count=n()) %>%
+  adorn_totals('row')%>%
+  mutate(PctDiff = (Total_Volume-Total_Counts)/Total_Volume)
+
+temp %>%
+  kbl(caption = "TRMv6.2 Total Volume by MPO") %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+
+
+temp2 <- g2 %>%
+  filter(DailyCount > 0) %>%
+  mutate(MPO_Tag = case_when(
+    MPO=="" ~ 'None',
+    MPO == "None" ~ 'None',
+    MPO == "CAMPO" ~ 'CAMPO',
+    MPO == "DCHC" ~ 'DCHC'
+  )) %>%
+  group_by(MPO_Tag) %>%
+   summarise(
+    Total_Volume = sum(Total_Flow_Daily, na.rm=T),
+    Total_Counts = sum(DailyCount, na.rm=T),
+    Count=n())%>%
+  adorn_totals('row')%>%
+  mutate(PctDiff = (Total_Volume-Total_Counts)/Total_Volume)
+
+temp2 %>%
+  kbl(caption = "TRMG2 Total Volume by MPO") %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+names(temp)[1] <- 'mpo'
+names(temp)[2] <- 'vol_v6'
+names(temp2)[2] <- 'vol_g2'
+
+joined_temp <- cbind(temp, temp2) %>% 
+  select(MPO=MPO_Tag, vol_v6, vol_g2) %>%
+  filter(MPO != "Total") %>%
+  mutate(PctDiff = (vol_g2 - vol_v6)/vol_g2)
+
+p <- ggplot(data=joined_temp, aes(x=reorder(MPO, -PctDiff), y=PctDiff)) +geom_bar(stat='identity', position='dodge') + theme_classic() + xlab('')+ ggtitle("MPO Level Total Daily Volume Pct Difference")
+
+ggplotly(p) 
+
+
+```
+
+
+
+## County
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+temp <- add_counts %>% 
+  group_by(COUNTY) %>%
+  filter(COUNTY != "external") %>%
+  filter(Daily_Counts > 0) %>%
+  filter(COUNTY != "") %>% ##filters empty space for tagged links with no counties 
+  summarise(
+    Total_Volume = sum(ToTDlyVol, na.rm=T),
+    Total_Counts = sum(Daily_Counts, na.rm=T),
+    Count=n()) %>%
+  add_row(COUNTY = 'alamance', Total_Volume = 0, Total_Counts = 0,  Count = 0) %>%
+  arrange(COUNTY) %>%
+  adorn_totals('row')  %>%
+  mutate(PctDiff = (Total_Volume-Total_Counts)/Total_Volume) 
+
+
+temp %>%
+  kbl(caption = "TRMv6.2 Total Volume by County") %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+
+
+temp2 <- g2 %>%
+  group_by(County) %>%
+  filter(DailyCount > 0) %>%
+  filter(County != "") %>% ##filters empty space for tagged links with no counties 
+  summarise(
+    Total_Volume = sum(Total_Flow_Daily, na.rm=T),
+    Total_Counts = sum(DailyCount, na.rm=T),
+    Count=n()) %>%
+  arrange(County) %>%
+  adorn_totals('row') %>%
+  mutate(PctDiff = (Total_Volume-Total_Counts)/Total_Volume)
+
+temp2 %>%
+  kbl(caption = "TRMG2 Total Volume by County") %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+
+
+
+
+```
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+
+
+names(temp)[1] <- 'County'
+temp$Model = 'v6'
+temp2$Model = 'g2'
+
+joined_temp <- rbind(temp, temp2)
+
+joined_temp <- joined_temp %>%
+  filter(County !="Total")
+
+
+
+p <- ggplot(data=joined_temp, aes(x=reorder(County, -Total_Volume), y=Total_Volume, fill=Model)) +geom_bar(stat='identity', position='dodge') + theme_classic() + xlab('')+ ggtitle("County Level Total Daily Volume Pct Difference")+ theme(axis.text.x=element_text(angle = -45, hjust = 0))
+
+ggplotly(p) 
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+## FC_Group
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+temp <- add_counts %>% 
+  mutate(FCGROUP_Tag = case_when(
+    FCGROUP == 1 ~ "Freeway",
+    FCGROUP == 2 ~ "Major Arterial",
+    FCGROUP == 3 ~ "Minor Arterial",
+    FCGROUP == 4 ~ "Collector",
+    FCGROUP == 5 ~ "Local",
+  )) %>%
+  filter(!is.na(FCGROUP_Tag)) %>%
+  group_by(FCGROUP_Tag) %>%
+  filter(Daily_Counts > 0) %>%
+ # filter(COUNTY != "") %>% ##filters empty space for tagged links with no counties 
+  summarise(
+    Total_Volume = sum(ToTDlyVol, na.rm=T),
+    Total_Counts = sum(Daily_Counts, na.rm=T),
+    Count=n()) %>%
+  arrange(Total_Volume) %>%
+  adorn_totals('row')  %>%
+  mutate(PctDiff = (Total_Volume-Total_Counts)/Total_Volume) 
+
+
+temp %>%
+  kbl(caption = "TRMv6.2 Total Volume by Facility") %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+
+
+temp2 <- g2 %>%
+  group_by(HCMType) %>%
+  filter(DailyCount > 0) %>%
+  filter(HCMType != "CC") %>% ##filters empty space for tagged links with no counties 
+  summarise(
+    Total_Volume = sum(Total_Flow_Daily, na.rm=T),
+    Total_Counts = sum(DailyCount, na.rm=T),
+    Count=n()) %>%
+  arrange(Total_Volume) %>%
+  adorn_totals('row') %>%
+  mutate(PctDiff = (Total_Volume-Total_Counts)/Total_Volume)
+
+temp2 %>%
+  kbl(caption = "TRMG2 Total Volume by Facility") %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+
+```
+
+
+
+
+
+
+## Cutline/Screenlines
+
+
+TRMG2 Screenlines:
+
+![](TRMG2 SLs.png) 
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+temp <- add_counts %>% 
+  mutate(SL_Tag = case_when(
+    Screenline == 3 ~ "I-85",
+    Screenline == 6 ~ "I-40",
+    Screenline == 10 ~ "Wake/Durham County Line",
+  
+  )) %>%
+  filter(!is.na(SL_Tag)) %>%
+  group_by(SL_Tag) %>%
+  filter(Daily_Counts > 0) %>%
+ # filter(COUNTY != "") %>% ##filters empty space for tagged links with no counties 
+  summarise(
+    Total_Volume = sum(ToTDlyVol, na.rm=T),
+    Total_Counts = sum(Daily_Counts, na.rm=T),
+    Count=n()) %>%
+ # arrange(Total_Volume) %>%
+ # adorn_totals('row')  %>%
+  mutate(PctDiff = (Total_Volume-Total_Counts)/Total_Volume) 
+
+
+temp %>%
+  kbl(caption = "TRMv6.2 Total Volume by Screenline") %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+
+
+temp <- add_counts %>% 
+  mutate(Cut_Line = case_when(
+    Cutline == 1 ~ "Southwest Durham",
+    Cutline == 2 ~ "Downtown Durham Loop",
+    Cutline == 4 ~ "Johnston County",
+    
+    Cutline == 5 ~ "Chatham County",
+    Cutline == 7 ~ "North Raleigh",
+    Cutline == 8 ~ "Eastern Wake",
+    
+    Cutline == 9 ~ "US-1 South",
+    Cutline == 11 ~ "North Wake",
+    Cutline == 12 ~ "Along US 70",
+    
+    Cutline == 13 ~ "Along I440E and W of I-40",
+    Cutline == 14 ~ "Chatham/Wake Line",
+    Cutline == 15 ~ "Wake/Harnett Line",
+    
+    Cutline == 16 ~ "US 64 East",
+    Cutline == 17 ~ "Durham/Orange Line"
+  
+  )) %>%
+  filter(!is.na(Cut_Line)) %>%
+  group_by(Cut_Line, Cutline) %>%
+  filter(Daily_Counts > 0) %>%
+ # filter(COUNTY != "") %>% ##filters empty space for tagged links with no counties 
+  summarise(
+    Total_Volume = sum(ToTDlyVol, na.rm=T),
+    Total_Counts = sum(Daily_Counts, na.rm=T),
+    Count=n()) %>%
+ arrange(Cutline) %>%
+ # adorn_totals('row')  %>%
+  mutate(PctDiff = (Total_Volume-Total_Counts)/Total_Volume) 
+
+
+temp %>%
+  kbl(caption = "TRMv6.2 Total Volume by Cutline") %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+
+
+temp2 <- g2 %>%
+  mutate(Screen_Line = case_when(
+    Screenline == 1 ~ "Wake/Harnett Line",
+    Screenline == 2 ~ "Wake/Johnston Line",
+    Screenline == 3 ~ "Wake/Franklin",
+    
+    Screenline == 4 ~ "Wake/Durham",
+    Screenline == 5 ~ "Southern Durham/Chatham",
+    Screenline == 6 ~ "Durham/Orange",
+    
+    Screenline == 7 ~ "Durham + Orange/Person",
+    Screenline == 8 ~ "Durham/Granville",
+    Screenline == 9 ~ "Downtown Durham Loop",
+    Screenline == 10 ~ "I-40",
+    Screenline == 11 ~ "I-85")) %>%
+  group_by(Screen_Line) %>%
+  filter(Screenline > 0) %>%
+#  filter(HCMType != "CC") %>% ##filters empty space for tagged links with no counties 
+  summarise(
+    ScreenlineNum = max(Screenline),
+    Total_Volume = sum(Total_Flow_Daily, na.rm=T),
+    Total_Counts = sum(DailyCount, na.rm=T),
+    Count=n()) %>%
+ # arrange(Total_Volume) %>%
+ # adorn_totals('row') %>%
+  mutate(PctDiff = ((Total_Volume-Total_Counts)/Total_Volume),
+        Type = c("Cut", "Cut", "Cut", "Screen","Cut", "Cut", "Cut", "Cut", "Cut", "Screen", "Screen")) %>%
+  arrange(ScreenlineNum)
+
+temp2 %>%
+  kbl(caption = "TRMG2 Total Volume by Screenline and Cutline") %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# VMT
+
+
+## MPO
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(kableExtra)
+
+
+
+temp <- add_counts %>%
+ # filter(Daily_Counts > 0) %>%
+  mutate(MPO_Tag = case_when(
+    is.na(MPO) ~ 'None',
+    MPO == 0 ~ 'None',
+    MPO == 1 ~ 'CAMPO',
+    MPO == 2 ~ 'DCHC'
+  )) %>%
+  group_by(MPO_Tag) %>%
+ # filter(Daily_Counts > 0) %>%
+   summarise(
+    Total_VMT = sum(ToT_VMT, na.rm=T)) %>%
+  adorn_totals('row')
+
+temp %>%
+  kbl(caption = "TRMv6.2 Total VMT by MPO") %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+
+
+temp2 <- g2 %>%
+ # filter(DailyCount > 0) %>%
+  mutate(MPO_Tag = case_when(
+    MPO=="" ~ 'None',
+    MPO == "None" ~ 'None',
+    MPO == "CAMPO" ~ 'CAMPO',
+    MPO == "DCHC" ~ 'DCHC'
+  )) %>%
+  group_by(MPO_Tag) %>%
+   summarise(
+    Total_VMT = sum(Total_VMT_Daily, na.rm=T))%>%
+  adorn_totals('row')
+
+temp2 %>%
+  kbl(caption = "TRMG2 Total VMT by MPO") %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+
+```
+
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+
+temp$Model = 'v6'
+temp2$Model = 'g2'
+
+joined_temp <- rbind(temp, temp2)
+
+joined_temp <- joined_temp %>%
+  filter(MPO_Tag !="Total")
+
+
+p <- ggplot(data=joined_temp, aes(x=reorder(MPO_Tag, -Total_VMT), y=Total_VMT, fill=Model)) +geom_bar(stat='identity', position='dodge') + theme_classic() + xlab('')+ ggtitle("MPO VMT")
+
+ggplotly(p) 
+
+
+```
+
+
+
+
+
+
+
+
+## County
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+temp <- add_counts %>% 
+  group_by(COUNTY) %>%
+  filter(COUNTY != "external") %>%
+ # filter(Daily_Counts > 0) %>%
+  filter(COUNTY != "") %>% ##filters empty space for tagged links with no counties 
+  summarise(
+    Total_VMT = sum(ToT_VMT, na.rm=T)) %>%
+  add_row(COUNTY = 'alamance', Total_VMT = 0) %>%
+  arrange(COUNTY) %>%
+  adorn_totals('row') 
+
+
+temp %>%
+  kbl(caption = "TRMv6.2 Total Volume by County") %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+
+
+temp2 <- g2 %>%
+  group_by(County) %>%
+  filter(County !="")%>%
+ #filter(DailyCount > 0) %>%
+  summarise(
+    Total_VMT = sum(Total_VMT_Daily, na.rm=T)) %>%
+  arrange(County) %>%
+  adorn_totals('row') 
+
+temp2 %>%
+  kbl(caption = "TRMG2 Total Volume by County") %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+
+
+names(temp)[1] <- 'County'
+temp$Model = 'v6'
+temp2$Model = 'g2'
+
+joined_temp <- rbind(temp, temp2)
+
+joined_temp <- joined_temp %>%
+  filter(County !="Total")
+
+
+
+p <- ggplot(data=joined_temp, aes(x=reorder(County, -Total_VMT), y=Total_VMT, fill=Model)) +geom_bar(stat='identity', position='dodge') + theme_classic() + xlab('')+ ggtitle("County VMT")+ theme(axis.text.x=element_text(angle = -45, hjust = 0))
+
+ggplotly(p) 
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+## FC_Group
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+temp <- add_counts %>% 
+  mutate(FCGROUP_Tag = case_when(
+    FCGROUP == 1 ~ "Freeway",
+    FCGROUP == 2 ~ "Major Arterial",
+    FCGROUP == 3 ~ "Minor Arterial",
+    FCGROUP == 4 ~ "Collector",
+    FCGROUP == 5 ~ "Local",
+  )) %>%
+  filter(!is.na(FCGROUP_Tag)) %>%
+  group_by(FCGROUP_Tag) %>%
+  filter(Daily_Counts > 0) %>%
+ # filter(COUNTY != "") %>% ##filters empty space for tagged links with no counties 
+  summarise(
+    Total_VMT = sum(ToT_VMT, na.rm=T)) %>%
+  arrange(Total_VMT) %>%
+  adorn_totals('row') 
+
+
+temp %>%
+  kbl(caption = "TRMv6.2 Total Volume by Facility") %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+
+
+temp2 <- g2 %>%
+  group_by(HCMType) %>%
+  filter(DailyCount > 0) %>%
+  filter(HCMType != "CC") %>% ##filters empty space for tagged links with no counties 
+  summarise(
+    Total_VMT = sum(Total_VMT_Daily, na.rm=T)) %>%
+  arrange(Total_VMT) %>%
+  adorn_totals('row') 
+
+temp2 %>%
+  kbl(caption = "TRMG2 Total Volume by Facility") %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+
+
+
+
+
+```
+
+
+
+
+
+
+
+## Volume Group
+ TBD
+
+```{r eval=FALSE, include=FALSE}
+
+
+
+temp <- add_counts %>% 
+filter(Daily_Counts > 0) %>%
+ mutate(Volume_Group = case_when(
+         ToTDlyVol <= 1000 & ToTDlyVol > 1~ 1,
+         ToTDlyVol < 2500 ~ 2,
+         ToTDlyVol < 5000 ~ 3,
+         ToTDlyVol < 10000 ~ 4,
+         ToTDlyVol < 25000 ~ 5,
+         ToTDlyVol < 50000 ~ 6,
+         ToTDlyVol > 50000 ~ 7)) %>%
+  group_by(Volume_Group) %>%
+  summarise(
+    Total_Volume = sum(ToTDlyVol, na.rm=T),
+    Total_Counts = sum(Daily_Counts, na.rm=T),
+    Count=n()) %>%
+  adorn_totals('row')
+
+temp$Volume_Group <- c("10000", "25000", "50000", "100000", "100000+")
+
+temp %>%
+  kbl(caption = "TRMv6.2 Total Volume by County") %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+
+
+
+
+
+temp <- g2 %>%
+ mutate(Volume_Group = case_when(
+         Total_Flow_Daily <= 10000 ~ 1,
+         Total_Flow_Daily <= 25000 ~ 2,
+         Total_Flow_Daily <= 50000 ~ 3,
+         Total_Flow_Daily <= 100000 ~4,
+         Total_Flow_Daily > 100000 ~ 5)) %>%
+  group_by(Volume_Group)%>%
+  summarise(
+    TotalCount = sum(DailyCount, na.rm=T),
+    TotalVolume= sum(Total_Flow_Daily, na.rm=T),
+    count = n()
+  ) 
+
+temp$Volume_Group <- c("10000", "25000", "50000", "100000", "100000+")
+
+temp
+
+
+
+
+```
+
+
+# Transit
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+line_names <- c("TTA", "CAT", "CHT", 'DATA', 'NCSU', 'Duke', 'OPT', 'CTRAN')
+
+op_data <- read_tcad("c:/Users/JacobFo/OneDrive - City of Durham/Full Model Runs/Original TRMv6.2_2016 - Copy/Output/OPT.bin") %>%
+  mutate(OPERATOR = line_names) %>%
+  group_by(OPERATOR) %>%
+  summarize(Total_OP =OPTVIEW1ON +OPTVIEW2ON + OPTVIEW3ON + OPTVIEW4ON + 
+  OPTVIEW5ON + OPTVIEW6ON + OPTVIEW7ON + OPTVIEW8ON )
+
+
+
+pk_data <- read_tcad("c:/Users/JacobFo/OneDrive - City of Durham/Full Model Runs/Original TRMv6.2_2016 - Copy/Output/PKT.bin")%>%
+  mutate(OPERATOR = line_names) %>%
+  group_by(OPERATOR) %>%
+  summarize(Total_PK =PKTVIEW1ON +PKTVIEW2ON + PKTVIEW3ON + PKTVIEW4ON + 
+  PKTVIEW5ON + PKTVIEW6ON + PKTVIEW7ON + PKTVIEW8ON )
+
+
+total_transit <- merge(op_data, pk_data) %>%
+  mutate(Total = Total_OP + Total_PK)
+
+
+
+total_transit %>%
+  kbl(caption = "TRMv6.2 Total Transit Ridership by TOD") %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+
+
+
+```
+
+
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+##Load TRMG2 Transit
+
+g2_transit <- read.csv('C:/Users/JacobFo/TRMG2_v0.2/scenarios/base_2016/output/_summaries/transit/boardings_and_alightings_by_period.csv') %>%
+  group_by(Agency) %>%
+  summarize(AM = sum(On[period=="AM"], na.rm=T),
+            MD = sum(On[period=="MD"], na.rm=T),
+            PM = sum(On[period=="PM"], na.rm=T),
+            NT = sum(On[period=="NT"], na.rm=T)) %>%
+  mutate(Total = AM + MD + PM + NT)
+
+g2_transit %>%
+  kbl(caption = "TRMG2 Total Transit Ridership by TOD") %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
